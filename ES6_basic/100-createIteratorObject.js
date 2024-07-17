@@ -1,19 +1,12 @@
 export default function createIteratorObject(report) {
-	let iterable = [];
+  const workers = [];
+  /* eslint-disable no-unused-vars */
+  for (const [department, employees] of Object.entries(report.allEmployees)) {
+    for (const employe of employees) {
+      workers.push(employe);
+    }
+  }
+  /* eslint-enable no-unused-vars */
 
-	if (!report.allEmployees || typeof report.allEmployees !== 'object') {
-		return iterable;
-	}
-
-	iterable = {
-		* [Symbol.iterator]() {
-			for (const value of Object.values(report.allEmployees)) {
-				for (const i of value) {
-					yield i;
-				}
-			}
-		},
-	};
-
-	return iterable;
+  return workers;
 }
