@@ -1,7 +1,5 @@
-// function named displayMessage that prints in STDOUT the string argument.
-
-function displayMessage(string) {
-  console.log(string);
+function displayMessage(msg) {
+  console.log(msg);
 }
 
 module.exports = displayMessage;

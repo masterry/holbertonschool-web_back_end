@@ -1,14 +1,13 @@
-// 8. Organize a complex HTTP server using Express
-// 8.5 Write the server reusing everything you created
-
 import express from 'express';
-
-const routes = require('./routes/index');
+import controllerRouting from './routes/index';
 
 const app = express();
+const port = 1245;
 
-app.use(routes);
+controllerRouting(app);
 
-app.listen(1245);
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
 
 export default app;

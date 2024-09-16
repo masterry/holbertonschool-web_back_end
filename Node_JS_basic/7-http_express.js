@@ -1,35 +1,54 @@
-// 7. Create a more complex HTTP server using Express
-
 const express = require('express');
-const countStudents = require('./3-read_file_async');
+const fs = require('fs');
 
 const app = express();
+const port = 1245;
 
 app.get('/', (req, res) => {
   res.send('Hello Holberton School!');
 });
 
-app.get('/students', async (req, res) => {
+app.get('/students', (req, res) => {
   res.write('This is the list of our students\n');
   try {
-    const { totalStudents, studentsByField } = await countStudents(process.argv[2]);
-    res.write(`Number of students: ${totalStudents}\n`);
-    for (const field in studentsByField) {
-      if (Object.prototype.hasOwnProperty.call(studentsByField, field)) {
-        const list = studentsByField[field];
-        const count = list.length;
-        const names = list.join(', ');
-        res.write(`Number of students in ${field}: ${count}. List: ${names}\n`);
+    const data = fs.readFileSync(process.argv[2], 'utf8');
+    const linesArray = data.split('\n');
+    let numberOfStudents = 0;
+    const studentsByField = {};
+    linesArray.shift();
+    for (const line of linesArray) {
+      const splittedLine = line.split(',');
+      if (splittedLine.length === 4) {
+        numberOfStudents += 1;
+        if (splittedLine[3] in studentsByField) {
+          studentsByField[splittedLine[3]].push(splittedLine[0]);
+        } else {
+          studentsByField[splittedLine[3]] = [splittedLine[0]];
+        }
       }
     }
-  } catch (error) {
-    res.write(error.message);
+    res.write(`Number of students: ${numberOfStudents}\n`);
+    let strStudents = '';
+    // eslint-disable-next-line guard-for-in
+    for (const field in studentsByField) {
+      let strList = '';
+      for (const student of studentsByField[field]) {
+        if (strList.length > 0) {
+          strList += ', ';
+        }
+        strList += student;
+      }
+      strStudents += `Number of students in ${field}: ${studentsByField[field].length}. List: ${strList}\n`;
+    }
+    res.write(strStudents.slice(0, -1));
+  } catch (err) {
+    res.write('Cannot load the database');
   }
-  res.end();
+  res.send();
 });
 
-app.listen(1245, () => {
-  console.log('Listening on port 1245');
+app.listen(port, () => {
+  console.log(`Express listening on port ${port}`);
 });
 
 module.exports = app;

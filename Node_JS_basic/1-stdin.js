@@ -1,5 +1,4 @@
-// Create a program named 1-stdin.js that will be executed through command line
-
+process.stdin.setEncoding('utf8');
 console.log('Welcome to Holberton School, what is your name?');
 
 process.stdin.on('readable', () => {
@@ -10,5 +9,5 @@ process.stdin.on('readable', () => {
 });
 
 process.stdin.on('end', () => {
-  process.stdout.write('This important software is now closing\n');
+  console.log('This important software is now closing');
 });
