@@ -3,13 +3,8 @@ module.exports = {
     browser: false,
     es6: true,
     jest: true,
-    node: true,
-    "es6": true
   },
-  extends: [
-    'airbnb-base',
-    'plugin:jest/all',
-  ],
+  extends: ['airbnb-base', 'plugin:jest/all'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -24,16 +19,12 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-console': 'off',
     'no-shadow': 'off',
-    'no-restricted-syntax': [
-      'error',
-      'LabeledStatement',
-      'WithStatement',
-    ],
+    'no-restricted-syntax': ['error', 'LabeledStatement', 'WithStatement'],
   },
-  overrides:[
+  overrides: [
     {
       files: ['*.js'],
       excludedFiles: 'babel.config.js',
-    }
-  ]
-};
+    },
+  ],
+}

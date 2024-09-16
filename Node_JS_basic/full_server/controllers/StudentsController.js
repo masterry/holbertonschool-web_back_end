@@ -1,33 +1,40 @@
-// full_server/controllers/StudentsController.js
 const readDatabase = require('../utils');
 
+const arrToStr = (arr) => arr.reduce((a, b, i) => a + b + (i === arr.length - 1 ? '' : ', '), '');
+
 class StudentsController {
-  static getAllStudents(request, response) {
-    readDatabase(process.argv[2])
-      .then((data) => {
-        response.status(200).send(`This is the list of our students
-Number of students in CS: ${data.CS.length}. List: ${data.CS.join(', ')}
-Number of students in SWE: ${data.SWE.length}. List: ${data.SWE.join(', ')}`);
-      })
-      .catch(() => {
-        response.status(500).send('Cannot load the database');
-      });
+  static async getAllStudents(request, response) {
+    try {
+      const { cs, swe } = await readDatabase(process.argv[2]);
+      let output = 'This is the list of our students\n';
+      output += `Number of students in CS: ${cs.length}. List: ${arrToStr(
+        cs,
+      )}\n`;
+      output += `Number of students in SWE: ${swe.length}. List: ${arrToStr(
+        swe,
+      )}\n`;
+      response.status(200).send(output);
+    } catch (err) {
+      console.log(err);
+      response.status(500).send('Cannot load the database');
+    }
   }
 
-  static getAllStudentsByMajor(request, response) {
-    readDatabase(process.argv[2])
-      .then((data) => {
-        if (request.params.major === 'CS') {
-          response.status(200).send(`List: ${data.CS.join(', ')}`);
-        } else if (request.params.major === 'SWE') {
-          response.status(200).send(`List: ${data.SWE.join(', ')}`);
-        } else {
-          response.status(500).send('Major parameter must be CS or SWE');
-        }
-      })
-      .catch(() => {
+  static async getAllStudentsByMajor(request, response) {
+    const { major } = request.params;
+    if (major !== 'CS' && major !== 'SWE') {
+      response.status(500).send('Major parameter must be CS or SWE');
+    } else {
+      try {
+        const { cs, swe } = await readDatabase(process.argv[2]);
+        response
+          .status(200)
+          .send(`List: ${arrToStr(major === 'CS' ? cs : swe)}`);
+      } catch (err) {
+        console.log(err);
         response.status(500).send('Cannot load the database');
-      });
+      }
+    }
   }
 }
 

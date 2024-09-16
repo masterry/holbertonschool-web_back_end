@@ -1,138 +1,56 @@
-# Node_JS_basic
+# 0x12. NodeJS Basics
 
-## Learning Objectives
-- run javascript using NodeJS
-- use NodeJS modules
-- use specific Node JS module to read files
-- use process to access command line arguments and the environment
-- create a small HTTP server using Node JS
-- create a small HTTP server using Express JS
-- create advanced routes with Express JS
-- use ES6 with Node JS with Babel-node
-- use Nodemon to develop faster
+## Resources:books:
+Read or watch:
+* [Node JS getting started](https://intranet.hbtn.io/rltoken/zB1fH6eopEsimkIDrRcOoQ)
+* [Process API doc](https://intranet.hbtn.io/rltoken/RxnSYT6KBxYh84O1bdaGxw)
+* [Child process](https://intranet.hbtn.io/rltoken/2TLRthTXqdyD0Rsh41sVUw)
+* [Express getting started](https://intranet.hbtn.io/rltoken/V-YZtu15tr-K-MEJRtF8YQ)
+* [Mocha documentation](https://intranet.hbtn.io/rltoken/LVroLBhGbLYdXxfmnukkjg)
+* [Nodemon documentation](https://intranet.hbtn.io/rltoken/es5vkktggXsqzvgVRO1yxw)
+
+---
+## Learning Objectives:bulb:
+What you should learn from this project:
+
+---
+
+### [0. Executing basic javascript with Node JS](./0-console.js)
+* In the file 0-console.js, create a function named displayMessage that prints in STDOUT the string argument.
 
 
-# 1. Running JavaScript Using Node.js
-Node.js is a runtime environment that allows you to execute JavaScript code outside of a web browser. Traditionally, JavaScript was used for client-side scripting in web browsers. Node.js enables server-side scripting, which means you can build applications that run on a server, not just in a browser.
+### [1. Using Process stdin](./1-stdin.js)
+* Create a program named 1-stdin.js that will be executed through command line:
 
-To run a JavaScript file using Node.js, you simply navigate to the directory containing your JavaScript file in the terminal and use the command`node yourfile.js`.
 
-**Best Practice**: Organize your project files in a logical structure. Keep source code, tests, and resources in separate directories.
+### [2. Reading a file synchronously with Node JS](./2-read_file.js)
+* Using the database database.csv (provided in project description), create a function countStudents in the file 2-read_file.js
 
-# 2. Using Node.js Modules
-Modules are reusable blocks of code that you can import into your Node.js application. Node.js comes with a powerful set of core modules that you can use without any further installation (e.g., fs for file system operations, http for HTTP server functionality).
 
-To use a module, you need to require it in your file:
+### [3. Reading a file asynchronously with Node JS](./ 3-read_file_async.js)
+* Using the database database.csv (provided in project description), create a function countStudents in the file 3-read_file_async.js
 
-``` javascript
 
-const fs = require('fs');
-```
-**Best Practice**: Only import modules that you need to keep the application's memory footprint small and improve load times.
+### [4. Create a small HTTP server using Node's HTTP module](./4-http.js)
+* In a file named 4-http.js, create a small HTTP server using the http module:
 
-# 3. Reading Files with Node.js
-The fs module is used for file operations. To read a file asynchronously, you can use fs.readFile:
 
-```javascript
+### [5. Create a more complex HTTP server using Node's HTTP module](./5-http.js)
+* In a file named 5-http.js, create a small HTTP server using the http module:
 
-fs.readFile('path/to/file', 'utf8', (err, data) => {
-  if (err) {
-    console.error(err);
-    return;
-  }
-  console.log(data);
-});
-```
-**Best Practice**: Always handle errors in callbacks to prevent crashes or unintended behavior.
 
-# 4. Using process to Access Command Line Arguments and the Environment
-The process object provides information about, and control over, the current Node.js process. To access command-line arguments:
+### [6. Create a small HTTP server using Express](./6-http_express.js)
+* Install Express and in a file named 6-http_express.js, create a small HTTP server using Express module:
 
-``` javascript
 
-const args = process.argv.slice(2);
-console.log(args);
-```
-**Best Practice**: Use libraries like yargs or commander for more complex command-line applications to parse arguments easily.
+### [7. Create a more complex HTTP server using Express](./7-http_express.js)
+* In a file named 7-http_express.js, recreate the small HTTP server using Express:
 
-# 5. Creating a Small HTTP Server Using Node.js
-You can use the http module to create an HTTP server:
 
-```javascript
+### [8. Organize a complex HTTP server using Express](./full_server/utils.js)
+* Obviously writing every part of a server within a single file is not sustainable. Let’s create a full server in a directory named full_server.
 
-const http = require('http');
+---
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, {'Content-Type': 'text/plain'});
-  res.end('Hello World\n');
-});
-
-server.listen(3000, () => {
-  console.log('Server running at http://localhost:3000/');
-});
-```
-**Best Practice**: Use express for more complex servers as it simplifies routing, middleware integration, and more.
-
-# 6. Using Express.js for HTTP Servers
-Express.js is a web application framework for Node.js, designed for building web applications and APIs. It simplifies the server creation process that's required with Node's http module.
-
-```javascript
-
-const express = require('express');
-const app = express();
-
-app.get('/', (req, res) => {
-  res.send('Hello World with Express!');
-});
-
-app.listen(3000, () => {
-  console.log('Example app listening on port 3000!');
-});
-```
-**Best Practice**: Organize your Express app using middleware, routers, and keeping your configuration and application logic separate.
-
-# 7. Advanced Routes with Express.js
-Express allows you to define routes with parameters, specify HTTP methods, and much more, enabling the creation of RESTful APIs.
-
-```javascript
-app.get('/users/:userId', (req, res) => {
-  res.send(`User ${req.params.userId}`);
-});
-```
-**Best Practice**: Use route parameters and middleware for validations and sanitizing input data to improve security.
-
-# 8. Using ES6 with Node.js and Babel-node
-Node.js supports most ES6 features natively, but if you need to use features that Node.js does not support yet, you can use Babel to transpile your code.
-
-**Best Practice**: Keep your Node.js version updated to reduce the need for transpiling newer JavaScript features.
-
-# 9. Using Nodemon for Development
-Nodemon is a utility that monitors for any changes in your source and automatically restarts your server. Install it globally via npm and start your application with nodemon instead of node.
-
-``` bash
-npm install -g nodemon
-nodemon yourfile.js
-```
-**Best Practice**: Use Nodemon during development for increased productivity but ensure to use a more stable process manager like PM2 for production environments.
-
-# Requirements and Testing
-- Follow the Node.js version specified (12.x.x) and use ESLint for linting to ensure code quality.
-- Write tests using Jest and organize them in a way that covers both unit tests and integration tests effectively.
-- Use module.exports to make functions or objects available for import in other files.
-
-# Docs || Resources
-[Node.js Docs](https://nodejs.org/docs/latest/api/)
-
-[Express.js](https://expressjs.com/)
-
-[Jest](https://jestjs.io/docs/getting-started)
-
-[ESLint](https://eslint.org/docs/latest/)
-
-[nodemon docs](https://github.com/remy/nodemon#nodemon)
-
-[node docs api process](https://node.readthedocs.io/en/latest/api/process/)
-
-[node docs child process](https://nodejs.org/api/child_process.html)
-
-[mocha docs](https://mochajs.org/)
+## Author
+* **Victor Hernandez** - [vik407](https://github.com/vik407)
