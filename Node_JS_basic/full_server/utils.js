@@ -1,21 +1,31 @@
-const fs = require('fs');
+// 8. Organize a complex HTTP server using Express
+// 8.1 Organize the structure of the server
+// file create a function named readDatabase that accepts a file path as argument:
 
-const aggregate = (data) => data.slice(1).reduce(
-  (a, b) => {
-    const [first, , , field] = b.split(',');
-    if (field === 'CS') {
-      a.cs.push(first);
-    } else if (field === 'SWE') a.swe.push(first);
-    return a;
-  },
-  { cs: [], swe: [] },
-);
+const fs = require('fs').promises;
 
-const readDatabase = (path) => new Promise((resolve, reject) => {
-  fs.readFile(path, 'utf-8', (err, res) => {
-    if (err) return reject(new Error('Cannot load the database'));
-    return resolve(aggregate(res.split('\n')));
-  });
-});
+async function readDatabase(filePath) {
+  try {
+    const data = await fs.readFile(filePath, 'utf8');
+    const lines = data.trim().split('\n');
+    const students = lines.slice(1);
 
-module.exports = readDatabase;
+    const studentsByField = {};
+
+    students.forEach((studentLine) => {
+      const [firstName, , , field] = studentLine.split(',');
+      if (field) {
+        if (!studentsByField[field]) {
+          studentsByField[field] = [];
+        }
+        studentsByField[field].push(firstName);
+      }
+    });
+
+    return Promise.resolve(studentsByField);
+  } catch (error) {
+    return Promise.reject(new Error('Cannot load the database'));
+  }
+}
+
+export default readDatabase;
